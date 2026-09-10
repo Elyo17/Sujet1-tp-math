@@ -50,4 +50,22 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
         QWidget::keyPressEvent(event);
         return;
     }
+
+}
+ScreenPoint GameWindow::toScreen(const WorldPoint& point) const
+{
+    double x = point.first;
+    double y = point.second;
+    int X = static_cast<int>(width() / 2.0 + _zoom * x);
+    int Y = static_cast<int>(height() / 2.0 - _zoom * y);
+    return { X, Y };
+}
+
+WorldPoint GameWindow::toPhysical(const ScreenPoint& point) const
+{
+    double X = point.first;
+    double Y = point.second;
+    double x = (X - width() / 2.0) / _zoom;
+    double y = (height() / 2.0 - Y) / _zoom;
+    return { x, y };
 }
