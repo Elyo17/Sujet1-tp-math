@@ -17,13 +17,24 @@ void GameWindow::paintEvent(QPaintEvent*)
 
     // Clear background with White color.
     painter.fillRect(rect(), Qt::white);
+#ifdef _DEBUG // affichage des axes x et y en mode Debug
+    painter.setPen(Qt::red);
 
+    // Axe x
+    painter.drawLine(0, height() / 2,width(), height() / 2);
+
+    // Axe y
+    painter.drawLine(width() / 2, 0,width() / 2, height());
+#endif
+    
+    
+    ScreenPoint position = toScreen({ position_player_x, position_player_y });
     // Draw player as a yellow circle.
     int radius = 10;
 
     painter.setBrush(Qt::yellow);
     painter.setPen(Qt::NoPen);
-    painter.drawEllipse(100 - radius, 100 - radius, radius, radius);
+    painter.drawEllipse(position.first - radius,position.second - radius,2 * radius,2 * radius );
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event)
@@ -31,26 +42,27 @@ void GameWindow::keyPressEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Left:
-        // Left key pressed.
+        position_player_x--;
+       
         break;
 
     case Qt::Key_Right:
-        // Right key pressed.
+        position_player_x++;
         break;
 
     case Qt::Key_Up:
-        // Up key pressed.
+        position_player_y++;
         break;
 
     case Qt::Key_Down:
-        // Down key pressed.
+        position_player_y++;
         break;
 
     default:
         QWidget::keyPressEvent(event);
         return;
     }
-
+    update();
 }
 ScreenPoint GameWindow::toScreen(const WorldPoint& point) const
 {

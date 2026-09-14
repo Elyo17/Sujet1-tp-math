@@ -21,6 +21,8 @@ private:
     ScreenPoint toScreen(const WorldPoint& point) const;
     WorldPoint toPhysical(const ScreenPoint& point) const;
     double _zoom = 50.0;
+    double position_player_x = 0;
+    double position_player_y =0;
 };
 
 #endif

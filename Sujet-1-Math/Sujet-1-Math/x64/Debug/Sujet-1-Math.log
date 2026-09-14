@@ -1,10 +1,7 @@
 ﻿   Qt/MSBuild: 3.5.0.0
    Qt: 6.11.2
+  moc GameWindow.h
   GameWindow.cpp
-  Sujet1Math.cpp
   main.cpp
-  qrc_Sujet1Math.cpp
-  moc_Sujet1Math.cpp
   moc_GameWindow.cpp
-  LINK : C:\Users\alexp\Documents\cours\mathématiques\Sujet1-tp-math\Sujet-1-Math\x64\Debug\Sujet-1-Math.exe introuvable ou non généré par la dernière édition de liens incrémentielle ; édition de liens complète en cours
   Sujet-1-Math.vcxproj -> C:\Users\alexp\Documents\cours\mathématiques\Sujet1-tp-math\Sujet-1-Math\x64\Debug\Sujet-1-Math.exe
