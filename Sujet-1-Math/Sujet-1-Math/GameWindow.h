@@ -6,6 +6,7 @@
 using ScreenPoint = std::pair<int, int>;
 using WorldPoint = std::pair<double, double>;
 
+
 class GameWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,11 +17,19 @@ public:
 
     void paintEvent(QPaintEvent*) override;
     void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
 private:
     ScreenPoint toScreen(const WorldPoint& point) const;
     WorldPoint toPhysical(const ScreenPoint& point) const;
+    void updateGame();
     double _zoom = 50.0;
+    WorldPoint PlayerPoint = {0,0};
+    QTimer* timer;
+    bool upPressed = false;
+    bool downPressed = false;
+    bool leftPressed = false;
+    bool rightPressed = false;
 };
 
 #endif
