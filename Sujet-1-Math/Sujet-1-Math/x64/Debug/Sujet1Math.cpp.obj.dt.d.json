@@ -1,10 +1,10 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\sujet1math.cpp",
+        "Source": "c:\\users\\alexp\\documents\\cours\\mathématiques\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\sujet1math.cpp",
         "ProvidedModule": "",
         "Includes": [
-            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\sujet1math.h",
+            "c:\\users\\alexp\\documents\\cours\\mathématiques\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\sujet1math.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qmainwindow",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qmainwindow.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qtwidgetsglobal.h",
@@ -363,7 +363,7 @@
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qcursor.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qbitmap.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qtabwidget.h",
-            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\x64\\debug\\qt\\uic\\ui_sujet1math.h",
+            "c:\\users\\alexp\\documents\\cours\\mathématiques\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\x64\\debug\\qt\\uic\\ui_sujet1math.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qvariant",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qapplication",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qapplication.h",
