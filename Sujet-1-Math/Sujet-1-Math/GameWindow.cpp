@@ -55,7 +55,7 @@ void GameWindow::keyPressEvent(QKeyEvent* event)
         break;
 
     case Qt::Key_Down:
-        position_player_y++;
+        position_player_y--;
         break;
 
     default:

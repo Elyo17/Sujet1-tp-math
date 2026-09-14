@@ -1,7 +1,4 @@
 ﻿   Qt/MSBuild: 3.5.0.0
    Qt: 6.11.2
-  moc GameWindow.h
   GameWindow.cpp
-  main.cpp
-  moc_GameWindow.cpp
   Sujet-1-Math.vcxproj -> C:\Users\alexp\Documents\cours\mathématiques\Sujet1-tp-math\Sujet-1-Math\x64\Debug\Sujet-1-Math.exe
