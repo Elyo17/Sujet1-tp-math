@@ -1,0 +1,9 @@
+﻿   Qt/MSBuild: 3.5.0.0
+   Qt: 6.11.2
+  GameWindow.cpp
+  Sujet1Math.cpp
+  main.cpp
+  qrc_Sujet1Math.cpp
+  moc_Sujet1Math.cpp
+  moc_GameWindow.cpp
+  Sujet-1-Math.vcxproj -> C:\Users\p_el\source\repos\Sujet1-tp-math\Sujet-1-Math\x64\Debug\Sujet-1-Math.exe

@@ -2,7 +2,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 
-GameWindow::GameWindow(QWidget *parent):
+GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)
 {
 }
@@ -11,7 +11,7 @@ GameWindow::~GameWindow()
 {
 }
 
-void GameWindow::paintEvent(QPaintEvent *)
+void GameWindow::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
 
@@ -26,7 +26,7 @@ void GameWindow::paintEvent(QPaintEvent *)
     painter.drawEllipse(100 - radius, 100 - radius, radius, radius);
 }
 
-void GameWindow::keyPressEvent(QKeyEvent *event)
+void GameWindow::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {

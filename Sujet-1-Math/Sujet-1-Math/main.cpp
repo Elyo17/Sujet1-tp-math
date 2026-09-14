@@ -1,7 +1,9 @@
+#include "Sujet1Math.h"
+#include <QtWidgets/QApplication>
 #include <GameWindow.h>
-#include <QApplication>
 
-int main(int argc, char *argv[])
+
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
