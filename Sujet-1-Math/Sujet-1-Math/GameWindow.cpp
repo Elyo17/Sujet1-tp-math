@@ -2,10 +2,12 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QTimer>
+#include <cmath>
 
 GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)
 {
+
     timer = new QTimer(this);
 
     connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
@@ -30,12 +32,20 @@ void GameWindow::paintEvent(QPaintEvent*)
     painter.setBrush(Qt::yellow);
     painter.setPen(Qt::NoPen);
     ScreenPoint PlayerScreen = toScreen(PlayerPoint);
+    
     painter.drawEllipse(PlayerScreen.first, PlayerScreen.second, radius, radius);
+
+    painter.setPen(Qt::black);
+    painter.setFont(QFont("Arial", 20, QFont::Bold));
+    std::string txt = "vitesse x : " + std::to_string(Vx) + " m/s\nvitesse y : " + std::to_string(Vy) + " m/s";
+    painter.drawText(50, 50, QString::fromStdString(txt));
+
 }
 
 void GameWindow::updateGame() 
 {
-    if (upPressed)
+    PreviousPlayerPoint = PlayerPoint;
+   /* if (upPressed)
         PlayerPoint.second += 0.1;
 
     if (downPressed)
@@ -45,12 +55,31 @@ void GameWindow::updateGame()
         PlayerPoint.first += 0.1;
 
     if (leftPressed)
-        PlayerPoint.first -= 0.1;
+        PlayerPoint.first -= 0.1;*/
+    calculateSpeed();
+
+    PlayerPoint.first = PlayerPoint.first + Vx * 0.02;
+    PlayerPoint.second = PlayerPoint.second + Vy * 0.02;
+
 
     update();
 }
 
+void GameWindow::calculateSpeed()
+{
+    Vx = (F_x() * 0.02) / 1208 + Vx;
+    Vy = (F_y() * 0.02) / 1208 + Vy;
 
+}
+
+double GameWindow::F_x() const
+{
+    return 0.0;
+}
+double GameWindow::F_y() const
+{
+    return -10.0;
+}
 
 void GameWindow::keyPressEvent(QKeyEvent* event)
 {        
