@@ -3,4 +3,5 @@ Sujet-1-Math/.vs/
 
 # CMake / compilation
 Sujet-1-Math/out/
-x64
+Sujet-1-Math/x64/
+Sujet-1-Math/Sujet-1-Math/x64/
