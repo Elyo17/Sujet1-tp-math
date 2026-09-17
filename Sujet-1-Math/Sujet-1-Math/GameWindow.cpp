@@ -2,10 +2,12 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QTimer>
+#include <cmath>
 
 GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)
 {
+
     timer = new QTimer(this);
 
     connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
@@ -30,11 +32,19 @@ void GameWindow::paintEvent(QPaintEvent*)
     painter.setBrush(Qt::yellow);
     painter.setPen(Qt::NoPen);
     ScreenPoint PlayerScreen = toScreen(PlayerPoint);
+    
     painter.drawEllipse(PlayerScreen.first, PlayerScreen.second, radius, radius);
+
+    painter.setPen(Qt::black);
+    painter.setFont(QFont("Arial", 20, QFont::Bold));
+    std::string txt = "vitesse : " + std::to_string(vitesse) + " m/s";
+    painter.drawText(50, 50, QString::fromStdString(txt));
+
 }
 
 void GameWindow::updateGame() 
 {
+    PreviousPlayerPoint = PlayerPoint;
     if (upPressed)
         PlayerPoint.second += 0.1;
 
@@ -46,8 +56,13 @@ void GameWindow::updateGame()
 
     if (leftPressed)
         PlayerPoint.first -= 0.1;
-
+    calculateSpeed();
     update();
+}
+
+void GameWindow::calculateSpeed()
+{
+    vitesse=(std::hypot(PreviousPlayerPoint.first - PlayerPoint.first, PreviousPlayerPoint.second - PlayerPoint.second))/ 0.02;
 }
 
 

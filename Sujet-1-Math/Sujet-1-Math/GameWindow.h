@@ -23,13 +23,17 @@ private:
     ScreenPoint toScreen(const WorldPoint& point) const;
     WorldPoint toPhysical(const ScreenPoint& point) const;
     void updateGame();
+    void calculateSpeed();
     double _zoom = 50.0;
     WorldPoint PlayerPoint = {0,0};
+    WorldPoint PreviousPlayerPoint = {0,0};
     QTimer* timer;
     bool upPressed = false;
     bool downPressed = false;
     bool leftPressed = false;
     bool rightPressed = false;
+    float vitesse = 0;
+
 };
 
 #endif
