@@ -24,6 +24,8 @@ private:
     WorldPoint toPhysical(const ScreenPoint& point) const;
     void updateGame();
     void calculateSpeed();
+    double F_x() const;
+    double F_y() const;
     double _zoom = 50.0;
     WorldPoint PlayerPoint = {0,0};
     WorldPoint PreviousPlayerPoint = {0,0};
@@ -33,6 +35,9 @@ private:
     bool leftPressed = false;
     bool rightPressed = false;
     float vitesse = 0;
+    double Vx;
+    double Vy;
+    
 
 };
 
