@@ -144,5 +144,4 @@ double GameWindow::frottementY() const
 {
     double k = 1.8;
     return -k * Vy;
-    double a;
 }
