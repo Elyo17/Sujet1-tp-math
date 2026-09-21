@@ -40,6 +40,7 @@ private:
     double k = 1.8;
     double frottementX() const;
     double frottementY() const;
+    QPixmap imageJoueur;
 };
 
 #endif

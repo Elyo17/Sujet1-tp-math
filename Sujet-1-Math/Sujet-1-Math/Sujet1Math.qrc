@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="Sujet1Math">
+    <qresource prefix="/Sujet1Math">
+        <file>voiture.png</file>
     </qresource>
 </RCC>
