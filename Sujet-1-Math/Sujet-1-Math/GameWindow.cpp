@@ -28,17 +28,25 @@ void GameWindow::paintEvent(QPaintEvent*)
 
     painter.fillRect(rect(), Qt::white);
 
+
     ScreenPoint PlayerScreen = toScreen(PlayerPoint);
 
-    painter.drawPixmap(
-        PlayerScreen.first - 50,
-        PlayerScreen.second - 30,
-        100,
-        60,
-        imageJoueur
-    );
 
-    // Affichage de la vitesse
+    double angle = std::atan2(Vy, Vx) * 180.0 / M_PI;
+
+    painter.save();
+
+    painter.translate(PlayerScreen.first, PlayerScreen.second);
+
+ 
+    painter.rotate(-angle);
+
+  
+    painter.drawPixmap( -50,-30, 100,60,imageJoueur);
+
+    painter.restore();
+
+ 
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 20, QFont::Bold));
 
