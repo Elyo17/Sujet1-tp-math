@@ -37,7 +37,7 @@ void GameWindow::paintEvent(QPaintEvent*)
 
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 20, QFont::Bold));
-    std::string txt = "vitesse x : " + std::to_string(Vx) + " m/s\nvitesse y : " + std::to_string(Vy) + " m/s";
+    std::string txt = "vitesse x : " + std::to_string(Vx) + " m/s \nvitesse y : " + std::to_string(Vy) + " m/s";
     painter.drawText(50, 50, QString::fromStdString(txt));
 
 }
@@ -74,11 +74,27 @@ void GameWindow::calculateSpeed()
 
 double GameWindow::F_x() const
 {
-    return 0.0;
+    double force = 0.0;
+   
+    if (rightPressed)
+        force += 100.0;
+    
+
+    if (leftPressed)
+        force -= 100.0;
+       
+    return force + frottementX();
 }
 double GameWindow::F_y() const
 {
-    return -10.0;
+    double force = 0.0;
+
+    if (upPressed)
+        force += 100.0;
+
+    if (downPressed)
+        force -= 100.0;
+    return (force -10.0)+ frottementY();
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event)
@@ -117,3 +133,15 @@ WorldPoint GameWindow::toPhysical(const ScreenPoint& point) const
     return { x, y };
 }
 
+
+double GameWindow::frottementX() const
+{
+    double k = 1.8;
+    return -k * Vx;
+}
+
+double GameWindow::frottementY() const
+{
+    double k = 1.8;
+    return -k * Vy;
+}

@@ -1,7 +1,7 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\gamewindow.h",
+        "Source": "c:\\users\\alexp\\documents\\cours\\mathématiques\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\gamewindow.h",
         "ProvidedModule": "",
         "Includes": [
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qmainwindow",
