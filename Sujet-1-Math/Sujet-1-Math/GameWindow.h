@@ -40,6 +40,9 @@ private:
     double k = 1.8;
     double frottementX() const;
     double frottementY() const;
+    QPixmap imageJoueur;
+    double angle = std::atan2(Vy, Vx);
+    void rebond();
 };
 
 #endif

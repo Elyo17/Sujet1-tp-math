@@ -3,7 +3,8 @@
 #include <QPainter>
 #include <QTimer>
 #include <cmath>
-
+#include <QPixmap>
+#include <QDebug>
 GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)
 {
@@ -11,8 +12,10 @@ GameWindow::GameWindow(QWidget* parent) :
     timer = new QTimer(this);
 
     connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
-
+    Vx = 0.0;
+    Vy = 0.0;
     timer->start(20); // 50 FPS
+    imageJoueur = QPixmap(":/Sujet1Math/voiture.png");
 }
 
 GameWindow::~GameWindow()
@@ -23,45 +26,55 @@ void GameWindow::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
 
-    // Clear background with White color.
     painter.fillRect(rect(), Qt::white);
 
-    // Draw player as a yellow circle.
-    int radius = 10;
 
-    painter.setBrush(Qt::yellow);
-    painter.setPen(Qt::NoPen);
     ScreenPoint PlayerScreen = toScreen(PlayerPoint);
-    
-    painter.drawEllipse(PlayerScreen.first, PlayerScreen.second, radius, radius);
 
+
+    double angle = std::atan2(Vy, Vx) * 180.0 / M_PI;
+
+    painter.save();
+
+    painter.translate(PlayerScreen.first, PlayerScreen.second);
+
+ 
+    painter.rotate(-angle);
+
+  
+    painter.drawPixmap( -50,-30, 100,60,imageJoueur);
+
+    painter.restore();
+
+ 
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 20, QFont::Bold));
-    std::string txt = "vitesse x : " + std::to_string(Vx) + " m/s \nvitesse y : " + std::to_string(Vy) + " m/s";
+
+    std::string txt = "vitesse x : " + std::to_string(Vx) +
+        " m/s \nvitesse y : " + std::to_string(Vy) + " m/s";
+
     painter.drawText(50, 50, QString::fromStdString(txt));
-
 }
-
-void GameWindow::updateGame() 
+void GameWindow::updateGame()
 {
     PreviousPlayerPoint = PlayerPoint;
-   /* if (upPressed)
-        PlayerPoint.second += 0.1;
+    /* if (upPressed)
+         PlayerPoint.second += 0.1;
 
-    if (downPressed)
-        PlayerPoint.second -= 0.1;
+     if (downPressed)
+         PlayerPoint.second -= 0.1;
 
-    if (rightPressed)
-        PlayerPoint.first += 0.1;
+     if (rightPressed)
+         PlayerPoint.first += 0.1;
 
-    if (leftPressed)
-        PlayerPoint.first -= 0.1;*/
+     if (leftPressed)
+         PlayerPoint.first -= 0.1;*/
     calculateSpeed();
 
     PlayerPoint.first = PlayerPoint.first + Vx * 0.02;
     PlayerPoint.second = PlayerPoint.second + Vy * 0.02;
 
-
+    rebond();
     update();
 }
 
@@ -75,14 +88,14 @@ void GameWindow::calculateSpeed()
 double GameWindow::F_x() const
 {
     double force = 0.0;
-   
+
     if (rightPressed)
         force += 100.0;
-    
+
 
     if (leftPressed)
         force -= 100.0;
-       
+
     return force + frottementX();
 }
 double GameWindow::F_y() const
@@ -94,11 +107,11 @@ double GameWindow::F_y() const
 
     if (downPressed)
         force -= 100.0;
-    return (force -10.0)+ frottementY();
+    return (force - 10.0) + frottementY();
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event)
-{        
+{
     if (event->key() == Qt::Key_Up)        upPressed = true;
     if (event->key() == Qt::Key_Down)        downPressed = true;
     if (event->key() == Qt::Key_Right)        rightPressed = true;
@@ -144,4 +157,34 @@ double GameWindow::frottementY() const
 {
     double k = 1.8;
     return -k * Vy;
+}
+
+void GameWindow::rebond()
+{
+    WorldPoint minPoint = toPhysical({ 50, height() - 30 });
+    WorldPoint maxPoint = toPhysical({ width() - 50, 30 });
+
+    if (PlayerPoint.first < minPoint.first)
+    {
+        PlayerPoint.first = minPoint.first;
+        Vx = -Vx;
+    }
+
+    if (PlayerPoint.first > maxPoint.first)
+    {
+        PlayerPoint.first = maxPoint.first;
+        Vx = -Vx;
+    }
+
+    if (PlayerPoint.second < minPoint.second)
+    {
+        PlayerPoint.second = minPoint.second;
+        Vy = -Vy;
+    }
+
+    if (PlayerPoint.second > maxPoint.second)
+    {
+        PlayerPoint.second = maxPoint.second;
+        Vy = -Vy;
+    }
 }

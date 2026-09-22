@@ -400,7 +400,9 @@
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qchar.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qpen.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qtimer",
-            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qtimer.h"
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qtimer.h",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qpixmap",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qdebug"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []
