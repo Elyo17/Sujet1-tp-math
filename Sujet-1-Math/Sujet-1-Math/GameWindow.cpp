@@ -74,7 +74,7 @@ void GameWindow::updateGame()
     PlayerPoint.first = PlayerPoint.first + Vx * 0.02;
     PlayerPoint.second = PlayerPoint.second + Vy * 0.02;
 
-
+    rebond();
     update();
 }
 
@@ -157,4 +157,34 @@ double GameWindow::frottementY() const
 {
     double k = 1.8;
     return -k * Vy;
+}
+
+void GameWindow::rebond()
+{
+    WorldPoint minPoint = toPhysical({ 50, height() - 30 });
+    WorldPoint maxPoint = toPhysical({ width() - 50, 30 });
+
+    if (PlayerPoint.first < minPoint.first)
+    {
+        PlayerPoint.first = minPoint.first;
+        Vx = -Vx;
+    }
+
+    if (PlayerPoint.first > maxPoint.first)
+    {
+        PlayerPoint.first = maxPoint.first;
+        Vx = -Vx;
+    }
+
+    if (PlayerPoint.second < minPoint.second)
+    {
+        PlayerPoint.second = minPoint.second;
+        Vy = -Vy;
+    }
+
+    if (PlayerPoint.second > maxPoint.second)
+    {
+        PlayerPoint.second = maxPoint.second;
+        Vy = -Vy;
+    }
 }
