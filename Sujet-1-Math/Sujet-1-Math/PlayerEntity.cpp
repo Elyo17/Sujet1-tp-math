@@ -32,16 +32,16 @@ double PlayerEntity::frottementY() const { return -k * Vy; }
 double PlayerEntity::F_x() const
 {
     double force = 0.0;
-    if (rightPressed) force += 100.0;
-    if (leftPressed)  force -= 100.0;
+    if (rightPressed) force += 600.0;
+    if (leftPressed)  force -= 600.0;
     return force + frottementX();
 }
 
 double PlayerEntity::F_y() const
 {
     double force = 0.0;
-    if (upPressed)   force += 100.0;
-    if (downPressed) force -= 100.0;
+    if (upPressed)   force += 600.0;
+    if (downPressed) force -= 600.0;
     return (force - 10.0) + frottementY();
 }
 
@@ -89,6 +89,7 @@ void PlayerEntity::rebond()
 // "position" est le membre PROTECTED hérité d'Entity (d'où l'intérêt de l'avoir mis en "protected" et pas "private").
 void PlayerEntity::update(double dt)
 {
+
     calculateSpeed(dt);
     position.first += Vx * dt;
     position.second += Vy * dt;
@@ -110,4 +111,9 @@ void PlayerEntity::draw(QPainter& painter, int screenX, int screenY)
     painter.rotate(-angle);
     painter.drawPixmap(-50, -30, 100, 60, sprite);
     painter.restore();
+    if (collided) //tester affichage collider
+    {
+        painter.setPen(QPen(Qt::red, 3));
+        painter.drawEllipse(screenX - 55, screenY - 35, 110, 70);
+    }
 }

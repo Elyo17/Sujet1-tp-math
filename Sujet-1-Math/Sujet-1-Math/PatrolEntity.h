@@ -22,7 +22,7 @@ public:
     // speed : vitesse de déplacement constante (unités/seconde).
     PatrolEntity(WorldPoint pointA, WorldPoint pointB, double speed,
         double w, double h, QColor color)
-        : Entity(pointA)   // on démarre sur pointA
+        : Entity(pointA,0.25)   // on démarre sur pointA
         , start(pointA)
         , end(pointB)
         , speed(speed)

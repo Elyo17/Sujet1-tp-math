@@ -21,7 +21,7 @@ class PlayerEntity : public Entity
 {
 public:
     PlayerEntity(WorldPoint startPosition, KeyBindings keys, QPixmap sprite)
-        : Entity(startPosition)
+        : Entity(startPosition,0.7)
         , keys(keys)
         , sprite(sprite)
     {
@@ -46,6 +46,11 @@ public:
     {
         minBound = minB;
         maxBound = maxB;
+    }
+
+    void ChangeCollider(bool c) 
+    {
+        collided = c;
     }
 
     // Utile pour l'affichage debug (texte "vitesse x : ...")
@@ -84,6 +89,9 @@ private:
     double frottementY() const;
     void calculateSpeed(double dt);
     void rebond();
+
+    // collision
+    bool collided = false;
 };
 
 #endif

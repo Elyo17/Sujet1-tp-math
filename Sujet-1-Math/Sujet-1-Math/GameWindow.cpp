@@ -6,6 +6,8 @@
 #include "PlayerEntity.h"
 #include "FixedEntity.h"
 #include "PatrolEntity.h"
+#include "Entity.h"
+#include <QApplication>
 
 
 
@@ -89,16 +91,19 @@ void GameWindow::updateGame()
     WorldPoint minPoint = toPhysical({ 50, height() - 30 });
     WorldPoint maxPoint = toPhysical({ width() - 50, 30 });
 
+    PlayerEntity* player = nullptr;
     for (auto& e : entities)
     {
         // On donne les limites SEULEMENT si l'entité est bien un
         // PlayerEntity (setBounds n'existe pas dans l'interface
         // Entity, donc on ne peut l'appeler qu'après un
         // dynamic_cast réussi).
-        PlayerEntity* player = dynamic_cast<PlayerEntity*>(e.get());
-        if (player != nullptr)
+        PlayerEntity* p = dynamic_cast<PlayerEntity*>(e.get());
+        if (p != nullptr)
         {
+            player = p;
             player->setBounds(minPoint, maxPoint);
+          
         }
 
         // En revanche, update() EST dans l'interface Entity : on
@@ -106,6 +111,40 @@ void GameWindow::updateGame()
         // dynamic_cast, sans savoir de quel type est réellement
         // l'entité. C'est la boucle "générique" du moteur de jeu.
         e->update(dt);
+    }
+
+
+    // boucle pour les collisions de chaque joueur
+    for (auto& e : entities)
+    {
+        PlayerEntity* player = dynamic_cast<PlayerEntity*>(e.get());
+
+        //si c'est un joueur
+        if (player != nullptr) 
+        {
+            bool hascollided = false;
+
+            for (auto it = entities.begin(); it != entities.end(); ++it)
+            {
+                auto& ent = *it;
+                if (ent.get() != player && player->isColliding(*ent))
+                {
+                    hascollided = true; // pour tester affichage
+
+                    if (FixedEntity* resource = dynamic_cast<FixedEntity*>(ent.get())) // en cas de ressource, suprimme la ressource
+                    {
+                        entities.erase(it);
+                        break;
+                    }
+                    else if (PatrolEntity* enemy = dynamic_cast<PatrolEntity*>(ent.get())) // en cas d'ennemis, quitte le jeu
+                    {
+                        QApplication::quit();
+                    }
+                }
+            }
+
+            player->ChangeCollider(hascollided);
+        }
     }
 
     update(); // redemande un paintEvent (méthode héritée de QWidget)

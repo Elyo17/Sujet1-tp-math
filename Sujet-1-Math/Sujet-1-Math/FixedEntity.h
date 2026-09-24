@@ -17,7 +17,7 @@ public:
     // On donne une position, une taille (largeur/hauteur en unités
     // "monde", pas en pixels), et une couleur pour la dessiner.
     FixedEntity(WorldPoint position, double w, double h, QColor color)
-        : Entity(position)   // appelle le constructeur de la classe
+        : Entity(position,0.5)   // appelle le constructeur de la classe
         // mère Entity pour initialiser "position"
         , width(w)
         , height(h)
