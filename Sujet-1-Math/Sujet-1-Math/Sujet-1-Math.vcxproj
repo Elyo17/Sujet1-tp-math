@@ -95,12 +95,21 @@
     <QtRcc Include="Sujet1Math.qrc" />
     <QtUic Include="Sujet1Math.ui" />
     <QtMoc Include="Sujet1Math.h" />
+    <ClCompile Include="FixedEntity.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="PatrolEntity.cpp" />
+    <ClCompile Include="PlayerEntity.cpp" />
     <ClCompile Include="Sujet1Math.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GameWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="FixedEntity.h" />
+    <ClInclude Include="PatrolEntity.h" />
+    <ClInclude Include="PlayerEntity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
