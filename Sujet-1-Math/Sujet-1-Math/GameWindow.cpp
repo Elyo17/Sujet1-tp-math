@@ -2,9 +2,13 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QTimer>
-#include <cmath>
-#include <QPixmap>
 #include <QDebug>
+#include "PlayerEntity.h"
+#include "FixedEntity.h"
+#include "PatrolEntity.h"
+
+
+
 GameWindow::GameWindow(QWidget* parent) :
     QMainWindow(parent)
 {
@@ -12,10 +16,29 @@ GameWindow::GameWindow(QWidget* parent) :
     timer = new QTimer(this);
 
     connect(timer, &QTimer::timeout, this, &GameWindow::updateGame);
-    Vx = 0.0;
-    Vy = 0.0;
     timer->start(20); // 50 FPS
-    imageJoueur = QPixmap(":/Sujet1Math/voiture.png");
+
+    QPixmap carSprite(":/Sujet1Math/voiture.png");
+
+    //Joueur 1 donc accès au touche flèche
+    KeyBindings player1Keys{ Qt::Key_Up, Qt::Key_Down, Qt::Key_Left, Qt::Key_Right };
+    entities.push_back(std::make_unique<PlayerEntity>(
+        WorldPoint{ -2.0, 0.0 }, player1Keys, carSprite));
+
+    // Joueur 2 avec les touches ZQSD
+    KeyBindings player2Keys{ Qt::Key_Z, Qt::Key_S, Qt::Key_Q, Qt::Key_D };
+    entities.push_back(std::make_unique<PlayerEntity>(
+        WorldPoint{ 2.0, 0.0 }, player2Keys, carSprite));
+
+    //Une entité fixe par exemple un mur au centre du terrain
+    entities.push_back(std::make_unique<FixedEntity>(
+        WorldPoint{ 0.0, 2.0 }, 40.0, 40.0, Qt::darkGray));
+
+    //L'entité Patrouille qui fait des allers-retours
+    entities.push_back(std::make_unique<PatrolEntity>(
+        WorldPoint{ -3.0, -3.0 }, WorldPoint{ 3.0, -3.0 },
+        1.5 /* vitesse */, 30.0, 30.0, Qt::red));
+
 }
 
 GameWindow::~GameWindow()
@@ -28,105 +51,92 @@ void GameWindow::paintEvent(QPaintEvent*)
 
     painter.fillRect(rect(), Qt::white);
 
+    
+    // Ceci est la boucle polymorphe. Elle appele draw
+    for (auto& e : entities)
+    {
+        ScreenPoint screenPos = toScreen(e->getPosition());
+        e->draw(painter, screenPos.first, screenPos.second);
+    }
 
-    ScreenPoint PlayerScreen = toScreen(PlayerPoint);
-
-
-    double angle = std::atan2(Vy, Vx) * 180.0 / M_PI;
-
-    painter.save();
-
-    painter.translate(PlayerScreen.first, PlayerScreen.second);
-
- 
-    painter.rotate(-angle);
-
-  
-    painter.drawPixmap( -50,-30, 100,60,imageJoueur);
-
-    painter.restore();
-
- 
+    //C'est un texte de debug
     painter.setPen(Qt::black);
-    painter.setFont(QFont("Arial", 20, QFont::Bold));
-
-    std::string txt = "vitesse x : " + std::to_string(Vx) +
-        " m/s \nvitesse y : " + std::to_string(Vy) + " m/s";
-
-    painter.drawText(50, 50, QString::fromStdString(txt));
+    painter.setFont(QFont("Arial", 14, QFont::Bold));
+    int y = 30;
+    for (auto& e : entities)
+    {
+        PlayerEntity* player = dynamic_cast<PlayerEntity*>(e.get());
+        if (player != nullptr)
+        {
+            std::string txt = "vitesse x : " + std::to_string(player->getVx()) +
+                " m/s | vitesse y : " + std::to_string(player->getVy()) + " m/s";
+            painter.drawText(20, y, QString::fromStdString(txt));
+            y += 25;
+        }
+    }
 }
 void GameWindow::updateGame()
 {
-    PreviousPlayerPoint = PlayerPoint;
-    /* if (upPressed)
-         PlayerPoint.second += 0.1;
 
-     if (downPressed)
-         PlayerPoint.second -= 0.1;
+    const double dt = 0.02; // 20 ms, cohérent avec timer->start(20)
 
-     if (rightPressed)
-         PlayerPoint.first += 0.1;
+ 
+   // Les limites de rebond dépendent de la taille de LA FENETRE
+   // (width()/height()), donc SEULE GameWindow peut les calculer
+   // (via toPhysical, qui utilise _zoom). On les calcule une fois
+   // ici, puis on les distribue à chaque PlayerEntity trouvé dans
+   // la liste (les autres entités n'en ont pas besoin).
+    WorldPoint minPoint = toPhysical({ 50, height() - 30 });
+    WorldPoint maxPoint = toPhysical({ width() - 50, 30 });
 
-     if (leftPressed)
-         PlayerPoint.first -= 0.1;*/
-    calculateSpeed();
+    for (auto& e : entities)
+    {
+        // On donne les limites SEULEMENT si l'entité est bien un
+        // PlayerEntity (setBounds n'existe pas dans l'interface
+        // Entity, donc on ne peut l'appeler qu'après un
+        // dynamic_cast réussi).
+        PlayerEntity* player = dynamic_cast<PlayerEntity*>(e.get());
+        if (player != nullptr)
+        {
+            player->setBounds(minPoint, maxPoint);
+        }
 
-    PlayerPoint.first = PlayerPoint.first + Vx * 0.02;
-    PlayerPoint.second = PlayerPoint.second + Vy * 0.02;
+        // En revanche, update() EST dans l'interface Entity : on
+        // peut l'appeler directement sur tout le monde, sans
+        // dynamic_cast, sans savoir de quel type est réellement
+        // l'entité. C'est la boucle "générique" du moteur de jeu.
+        e->update(dt);
+    }
 
-    rebond();
-    update();
-}
-
-void GameWindow::calculateSpeed()
-{
-    Vx = (F_x() * 0.02) / 1208 + Vx;
-    Vy = (F_y() * 0.02) / 1208 + Vy;
-
-}
-
-double GameWindow::F_x() const
-{
-    double force = 0.0;
-
-    if (rightPressed)
-        force += 100.0;
-
-
-    if (leftPressed)
-        force -= 100.0;
-
-    return force + frottementX();
-}
-double GameWindow::F_y() const
-{
-    double force = 0.0;
-
-    if (upPressed)
-        force += 100.0;
-
-    if (downPressed)
-        force -= 100.0;
-    return (force - 10.0) + frottementY();
+    update(); // redemande un paintEvent (méthode héritée de QWidget)
 }
 
 void GameWindow::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Up)        upPressed = true;
-    if (event->key() == Qt::Key_Down)        downPressed = true;
-    if (event->key() == Qt::Key_Right)        rightPressed = true;
-    if (event->key() == Qt::Key_Left)        leftPressed = true;
+    
+    // GameWindow transmet la touche pressée à TOUTES les entités.
+    // Chacune décide elle-même si ça la concerne :
+    //   - PlayerEntity compare "key" à ses propres KeyBindings
+    //   - FixedEntity / PatrolEntity ignorent l'appel (comportement
+    //     vide hérité d'Entity, jamais redéfini)
+    // GameWindow n'a donc PLUS BESOIN de savoir combien de joueurs
+    // il y a, ni quelles touches ils utilisent : tout est délégué.
+    for (auto& e : entities)
+    {
+        e->onKeyPress(event->key());
+    }
     QWidget::keyPressEvent(event);
 }
+
+
 void GameWindow::keyReleaseEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Up)        upPressed = false;
-    if (event->key() == Qt::Key_Down)        downPressed = false;
-    if (event->key() == Qt::Key_Right)        rightPressed = false;
-    if (event->key() == Qt::Key_Left)        leftPressed = false;
+    for (auto& e : entities)
+    {
+        e->onKeyRelease(event->key());
+    }
     QWidget::keyReleaseEvent(event);
 }
-
 
 ScreenPoint GameWindow::toScreen(const WorldPoint& point) const
 {
@@ -144,47 +154,4 @@ WorldPoint GameWindow::toPhysical(const ScreenPoint& point) const
     double x = (X - width() / 2.0) / _zoom;
     double y = (height() / 2.0 - Y) / _zoom;
     return { x, y };
-}
-
-
-double GameWindow::frottementX() const
-{
-    double k = 1.8;
-    return -k * Vx;
-}
-
-double GameWindow::frottementY() const
-{
-    double k = 1.8;
-    return -k * Vy;
-}
-
-void GameWindow::rebond()
-{
-    WorldPoint minPoint = toPhysical({ 50, height() - 30 });
-    WorldPoint maxPoint = toPhysical({ width() - 50, 30 });
-
-    if (PlayerPoint.first < minPoint.first)
-    {
-        PlayerPoint.first = minPoint.first;
-        Vx = -Vx;
-    }
-
-    if (PlayerPoint.first > maxPoint.first)
-    {
-        PlayerPoint.first = maxPoint.first;
-        Vx = -Vx;
-    }
-
-    if (PlayerPoint.second < minPoint.second)
-    {
-        PlayerPoint.second = minPoint.second;
-        Vy = -Vy;
-    }
-
-    if (PlayerPoint.second > maxPoint.second)
-    {
-        PlayerPoint.second = maxPoint.second;
-        Vy = -Vy;
-    }
 }

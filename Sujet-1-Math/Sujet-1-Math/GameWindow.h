@@ -3,8 +3,13 @@
 #define GAME_WINDOW_H
 
 #include <QMainWindow>
+#include <memory> // C'est pour le std::unique_ptr
+#include <vector>
+#include "Entity.h" // GameWindow ne connaît QUE l'interface abstraite Entity
+                    //Mais pas PlayerEntity / FixedEntity / PatrolEntity ici : ces types concrets ne seront inclus que dans le .cpp,
+
 using ScreenPoint = std::pair<int, int>;
-using WorldPoint = std::pair<double, double>;
+    
 
 
 class GameWindow : public QMainWindow
@@ -27,22 +32,10 @@ private:
     double F_x() const;
     double F_y() const;
     double _zoom = 50.0;
-    WorldPoint PlayerPoint = {0,0};
-    WorldPoint PreviousPlayerPoint = {0,0};
     QTimer* timer;
-    bool upPressed = false;
-    bool downPressed = false;
-    bool leftPressed = false;
-    bool rightPressed = false;
-    float vitesse = 0;
-    double Vx;
-    double Vy;
-    double k = 1.8;
-    double frottementX() const;
-    double frottementY() const;
-    QPixmap imageJoueur;
-    double angle = std::atan2(Vy, Vx);
-    void rebond();
+   
+
+    std::vector<std::unique_ptr<Entity>> entities;
 };
 
 #endif
