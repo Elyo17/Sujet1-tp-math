@@ -118,6 +118,7 @@ void PlayerEntity::rebond()
 // "position" est le membre PROTECTED hérité d'Entity (d'où l'intérêt de l'avoir mis en "protected" et pas "private").
 void PlayerEntity::update(double dt)
 {
+
     calculateSpeed(dt);
     position.first += Vx * dt;
     position.second += Vy * dt;
@@ -139,4 +140,5 @@ void PlayerEntity::draw(QPainter& painter, int screenX, int screenY)
     painter.rotate(-angle);
     painter.drawPixmap(-50, -30, 100, 60, sprite);
     painter.restore();
+
 }

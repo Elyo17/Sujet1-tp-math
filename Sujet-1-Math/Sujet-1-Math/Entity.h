@@ -16,8 +16,8 @@ class Entity
 {
 public:
     // Constructeur : toute entité a une position de départ.
-    explicit Entity(WorldPoint startPosition)
-        : position(startPosition)
+    explicit Entity(WorldPoint startPosition, double radius)
+        : position(startPosition), radius(radius)
     {
     }
 
@@ -27,9 +27,20 @@ public:
     virtual void onKeyPress(int key) {}
     virtual void onKeyRelease(int key) {}
     WorldPoint getPosition() const { return position; }
-
+    double getRadius() const { return radius; }
+    bool isColliding(const Entity& other) const
+    {
+        // recupere la distance entre les 2 entitées
+        double dx = position.first - other.position.first;
+        double dy = position.second - other.position.second;
+        double distanceSquared = dx * dx + dy * dy;
+        // renvoie si les 2 rayon se touches
+        double radiusSum = radius + other.radius;
+        return distanceSquared <= radiusSum * radiusSum;
+    }
 protected:
     WorldPoint position;
+    double radius;
 };
 
 #endif

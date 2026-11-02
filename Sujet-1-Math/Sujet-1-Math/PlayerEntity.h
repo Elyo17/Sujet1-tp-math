@@ -21,7 +21,7 @@ class PlayerEntity : public Entity
 {
 public:
     PlayerEntity(WorldPoint startPosition, KeyBindings keys, QPixmap sprite)
-        : Entity(startPosition)
+        : Entity(startPosition,0.7)
         , keys(keys)
         , sprite(sprite)
     {
@@ -48,9 +48,17 @@ public:
         maxBound = maxB;
     }
 
+
     // Utile pour l'affichage debug (texte "vitesse x : ...")
     double getVx() const { return Vx; }
     double getVy() const { return Vy; }
+
+    //  score
+    void addScore()
+    {
+        score = score + 1;
+    }
+    int getScore() const { return score; }
 
 private:
     // --- Etat clavier : PROPRE à CE joueur (donc si joueur 1 et
@@ -90,6 +98,10 @@ private:
     double frottementY() const;
     void calculateSpeed(double dt);
     void rebond();
+
+    // collision et score
+    int score = 0;
+
 };
 
 #endif
