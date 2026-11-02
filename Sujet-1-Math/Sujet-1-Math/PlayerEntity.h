@@ -68,7 +68,11 @@ private:
     double Vx = 0.0;
     double Vy = 0.0;
     const double k = 1.8;        // coefficient de frottement
-    const double mass = 1208.0;  // masse (comme dans calculateSpeed())
+    const double mass = 1208.0;
+    double G = 0.00005;
+    double M = 1000.0;
+
+    WorldPoint centre = { 0.0, 0.0 };// masse (comme dans calculateSpeed())
 
     // --- Limites de rebond, fournies par GameWindow ---
     WorldPoint minBound = { 0, 0 };
@@ -80,6 +84,8 @@ private:
     //     inutiles pour le reste du programme, donc cachées ---
     double F_x() const;
     double F_y() const;
+    double forceCentraleX() const;
+    double forceCentraleY() const;
     double frottementX() const;
     double frottementY() const;
     void calculateSpeed(double dt);

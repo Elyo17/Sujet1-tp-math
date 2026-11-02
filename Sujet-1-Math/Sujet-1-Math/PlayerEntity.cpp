@@ -34,7 +34,7 @@ double PlayerEntity::F_x() const
     double force = 0.0;
     if (rightPressed) force += 100.0;
     if (leftPressed)  force -= 100.0;
-    return force + frottementX();
+    return force +forceCentraleX() + frottementX();
 }
 
 double PlayerEntity::F_y() const
@@ -42,10 +42,39 @@ double PlayerEntity::F_y() const
     double force = 0.0;
     if (upPressed)   force += 100.0;
     if (downPressed) force -= 100.0;
-    return (force - 10.0) + frottementY();
+    return (force - 10.0) +forceCentraleY() + frottementY();
 }
 
+double PlayerEntity::forceCentraleX() const
+{
+    double dx = centre.first - position.first;
+    double dy = centre.second - position.second;
 
+    double r = std::sqrt(dx * dx + dy * dy);
+
+    double directionX = dx / r;
+
+    double force = G * mass * M / (r * r);
+
+    return force * directionX;
+}
+
+double PlayerEntity::forceCentraleY() const
+{
+    double dx = centre.first - position.first;
+    double dy = centre.second - position.second;
+
+    double r = std::sqrt(dx * dx + dy * dy);
+
+    if (r == 0.0)
+        return 0.0;
+
+    double directionY = dy / r;
+
+    double force = G * mass * M / (r * r);
+
+    return force * directionY;
+}
 // Différence avec l'original : "dt" est maintenant un PARAMETRE, (passé par update()) plutôt qu'une constante 0.02 codée en dur.
 // Avantage : si un jour le timer change de fréquence, ou si on veut un dt variable, ce code n'a pas besoin de changer.
 void PlayerEntity::calculateSpeed(double dt)
