@@ -48,14 +48,17 @@ public:
         maxBound = maxB;
     }
 
-    void ChangeCollider(bool c) 
-    {
-        collided = c;
-    }
 
     // Utile pour l'affichage debug (texte "vitesse x : ...")
     double getVx() const { return Vx; }
     double getVy() const { return Vy; }
+
+    //  score
+    void addScore()
+    {
+        score = score + 1;
+    }
+    int getScore() const { return score; }
 
 private:
     // --- Etat clavier : PROPRE à CE joueur (donc si joueur 1 et
@@ -90,8 +93,9 @@ private:
     void calculateSpeed(double dt);
     void rebond();
 
-    // collision
-    bool collided = false;
+    // collision et score
+    int score = 0;
+
 };
 
 #endif

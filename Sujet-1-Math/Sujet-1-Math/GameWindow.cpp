@@ -71,7 +71,7 @@ void GameWindow::paintEvent(QPaintEvent*)
         if (player != nullptr)
         {
             std::string txt = "vitesse x : " + std::to_string(player->getVx()) +
-                " m/s | vitesse y : " + std::to_string(player->getVy()) + " m/s";
+                " m/s | vitesse y : " + std::to_string(player->getVy()) + " m/s" + " | score : "+std::to_string(player->getScore());
             painter.drawText(20, y, QString::fromStdString(txt));
             y += 25;
         }
@@ -122,17 +122,16 @@ void GameWindow::updateGame()
         //si c'est un joueur
         if (player != nullptr) 
         {
-            bool hascollided = false;
 
             for (auto it = entities.begin(); it != entities.end(); ++it)
             {
                 auto& ent = *it;
                 if (ent.get() != player && player->isColliding(*ent))
                 {
-                    hascollided = true; // pour tester affichage
 
                     if (FixedEntity* resource = dynamic_cast<FixedEntity*>(ent.get())) // en cas de ressource, suprimme la ressource
                     {
+                        player->addScore();
                         entities.erase(it);
                         break;
                     }
@@ -143,7 +142,6 @@ void GameWindow::updateGame()
                 }
             }
 
-            player->ChangeCollider(hascollided);
         }
     }
 

@@ -111,9 +111,5 @@ void PlayerEntity::draw(QPainter& painter, int screenX, int screenY)
     painter.rotate(-angle);
     painter.drawPixmap(-50, -30, 100, 60, sprite);
     painter.restore();
-    if (collided) //tester affichage collider
-    {
-        painter.setPen(QPen(Qt::red, 3));
-        painter.drawEllipse(screenX - 55, screenY - 35, 110, 70);
-    }
+
 }
