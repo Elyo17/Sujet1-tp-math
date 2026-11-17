@@ -8,6 +8,7 @@
 #include "PatrolEntity.h"
 #include "Entity.h"
 #include <QApplication>
+#include "EnemyEntity.h"
 
 
 
@@ -26,6 +27,12 @@ GameWindow::GameWindow(QWidget* parent) :
     KeyBindings player1Keys{ Qt::Key_Up, Qt::Key_Down, Qt::Key_Left, Qt::Key_Right };
     entities.push_back(std::make_unique<PlayerEntity>(
         WorldPoint{ -2.0, 0.0 }, player1Keys, carSprite));
+
+    Entity* joueur1 = entities[0].get();
+
+    EnemyProfile intermediaire{ 1208.0, 1.8, 40.0, 300.0, 100.0, ChaseMode::ProportionnelAmorti };
+    entities.push_back(std::make_unique<EnemyEntity>(
+        WorldPoint{ 5.0, 4.0 }, joueur1, intermediaire, Qt::magenta));
 
     // Joueur 2 avec les touches ZQSD
     KeyBindings player2Keys{ Qt::Key_Z, Qt::Key_S, Qt::Key_Q, Qt::Key_D };
@@ -91,6 +98,28 @@ void GameWindow::updateGame()
     WorldPoint minPoint = toPhysical({ 50, height() - 30 });
     WorldPoint maxPoint = toPhysical({ width() - 50, 30 });
 
+
+    for (auto& e : entities)
+    {
+        EnemyEntity* enemy = dynamic_cast<EnemyEntity*>(e.get());
+        if (enemy == nullptr) continue;
+
+        enemy->setBounds(minPoint, maxPoint);   // ne sort plus de l'écran
+
+        // Cherche le joueur le plus proche
+        Entity* plusProche = nullptr;
+        double meilleureDist = 1e18;
+        for (auto& other : entities)
+        {
+            if (dynamic_cast<PlayerEntity*>(other.get()) == nullptr) continue;
+            double dx = other->getPosition().first - enemy->getPosition().first;
+            double dy = other->getPosition().second - enemy->getPosition().second;
+            double d = dx * dx + dy * dy;
+            if (d < meilleureDist) { meilleureDist = d; plusProche = other.get(); }
+        }
+        enemy->setTarget(plusProche);
+    }
+
     PlayerEntity* player = nullptr;
     for (auto& e : entities)
     {
@@ -136,6 +165,10 @@ void GameWindow::updateGame()
                         break;
                     }
                     else if (PatrolEntity* enemy = dynamic_cast<PatrolEntity*>(ent.get())) // en cas d'ennemis, quitte le jeu
+                    {
+                        QApplication::quit();
+                    }
+                    else if (dynamic_cast<EnemyEntity*>(ent.get()) || dynamic_cast<PatrolEntity*>(ent.get()))
                     {
                         QApplication::quit();
                     }
