@@ -31,7 +31,7 @@ private:
     void calculateSpeed();
     double F_x() const;
     double F_y() const;
-    double _zoom = 50.0;
+    double _zoom = 25.0;
     QTimer* timer;
    
 

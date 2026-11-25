@@ -97,6 +97,7 @@
     <QtMoc Include="Sujet1Math.h" />
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="FixedEntity.cpp" />
+    <ClCompile Include="FollowerEntity.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="PatrolEntity.cpp" />
     <ClCompile Include="PlayerEntity.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FixedEntity.h" />
+    <ClInclude Include="FollowerEntity.h" />
     <ClInclude Include="PatrolEntity.h" />
     <ClInclude Include="PlayerEntity.h" />
   </ItemGroup>

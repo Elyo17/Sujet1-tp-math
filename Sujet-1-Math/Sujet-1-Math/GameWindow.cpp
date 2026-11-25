@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include <QApplication>
 #include "EnemyEntity.h"
+#include "FollowerEntity.h"
 
 
 
@@ -47,6 +48,10 @@ GameWindow::GameWindow(QWidget* parent) :
     entities.push_back(std::make_unique<PatrolEntity>(
         WorldPoint{ -3.0, -3.0 }, WorldPoint{ 3.0, -3.0 },
         1.5 /* vitesse */, 30.0, 30.0, Qt::red));
+
+    auto suiveur = std::make_unique<FollowerEntity>(WorldPoint{ 6.0, 5.0 }, joueur1, Qt::cyan);
+    suiveur->setTangentialCoef(0.0);   // question 3 : 2nd terme désactivé
+    entities.push_back(std::move(suiveur));
 
 }
 
@@ -114,6 +119,7 @@ void GameWindow::updateGame()
             if (dynamic_cast<PlayerEntity*>(other.get()) == nullptr) continue;
             double dx = other->getPosition().first - enemy->getPosition().first;
             double dy = other->getPosition().second - enemy->getPosition().second;
+
             double d = dx * dx + dy * dy;
             if (d < meilleureDist) { meilleureDist = d; plusProche = other.get(); }
         }
