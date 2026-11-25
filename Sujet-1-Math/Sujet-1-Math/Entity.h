@@ -30,14 +30,43 @@ public:
     double getRadius() const { return radius; }
     bool isColliding(const Entity& other) const
     {
-        // recupere la distance entre les 2 entitées
+        if (other.isSegment())
+        {
+            // point A et B du segment
+            auto A = other.pointA();
+            auto B = other.pointB();
+
+            double sx = B.first - A.first, sy = B.second - A.second;
+            double px = position.first - A.first, py = position.second - A.second;
+
+            // t = position du point le plus proche sur le segment (0 = A, 1 = B)
+            double longueurCarree = sx * sx + sy * sy;
+            double t = (longueurCarree > 0) ? (px * sx + py * sy) / longueurCarree : 0;
+            if (t < 0) t = 0;
+            if (t > 1) t = 1;
+
+            // point le plus proche du centre, sur le segment
+            double cx = A.first + t * sx;
+            double cy = A.second + t * sy;
+
+            double dx = position.first - cx;
+            double dy = position.second - cy;
+            // seul le rayon du cercle compte (le segment n'a pas de rayon)
+            return dx * dx + dy * dy <= radius * radius;
+        }
+
+        // cas normal : deux cercles
         double dx = position.first - other.position.first;
         double dy = position.second - other.position.second;
         double distanceSquared = dx * dx + dy * dy;
-        // renvoie si les 2 rayon se touches
         double radiusSum = radius + other.radius;
         return distanceSquared <= radiusSum * radiusSum;
     }
+    
+    virtual bool isSegment() const { return false; }
+    virtual std::pair<double, double> pointA() const { return position; }
+    virtual std::pair<double, double> pointB() const { return position; }
+
 protected:
     WorldPoint position;
     double radius;

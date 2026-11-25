@@ -111,7 +111,10 @@ void PlayerEntity::rebond()
         Vy = -Vy;
     }
 }
-
+void PlayerEntity::rebondEntite()
+{
+    Vy = -Vy;   
+}
 
 // Rassemble, dans l'ordre, exactement ce que faisait GameWindow::updateGame() pour la partie "joueur" :
 // calcul de vitesse -> intégration de la position -> rebond.

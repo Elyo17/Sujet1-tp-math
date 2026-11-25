@@ -59,6 +59,7 @@ public:
         score = score + 1;
     }
     int getScore() const { return score; }
+    void rebondEntite();
 
 private:
     // --- Etat clavier : PROPRE à CE joueur (donc si joueur 1 et
@@ -98,6 +99,7 @@ private:
     double frottementY() const;
     void calculateSpeed(double dt);
     void rebond();
+
 
     // collision et score
     int score = 0;

@@ -95,6 +95,7 @@
     <QtRcc Include="Sujet1Math.qrc" />
     <QtUic Include="Sujet1Math.ui" />
     <QtMoc Include="Sujet1Math.h" />
+    <ClCompile Include="BounceEntity.cpp" />
     <ClCompile Include="FixedEntity.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="PatrolEntity.cpp" />
@@ -106,6 +107,7 @@
     <QtMoc Include="GameWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BounceEntity.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FixedEntity.h" />
     <ClInclude Include="PatrolEntity.h" />

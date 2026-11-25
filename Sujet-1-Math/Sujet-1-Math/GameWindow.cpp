@@ -6,6 +6,7 @@
 #include "PlayerEntity.h"
 #include "FixedEntity.h"
 #include "PatrolEntity.h"
+#include "BounceEntity.h"
 #include "Entity.h"
 #include <QApplication>
 
@@ -40,6 +41,10 @@ GameWindow::GameWindow(QWidget* parent) :
     entities.push_back(std::make_unique<PatrolEntity>(
         WorldPoint{ -3.0, -3.0 }, WorldPoint{ 3.0, -3.0 },
         1.5 /* vitesse */, 30.0, 30.0, Qt::red));
+
+    //L'entité rebond 
+    entities.push_back(std::make_unique<BounceEntity>(
+        WorldPoint{ -4.0, 4.0 }, 100.0, 60.0, Qt::darkGray));
 
 }
 
@@ -126,20 +131,18 @@ void GameWindow::updateGame()
             for (auto it = entities.begin(); it != entities.end(); ++it)
             {
                 auto& ent = *it;
-                if (ent.get() != player && player->isColliding(*ent))
-                {
+                if (ent.get() == player || !player->isColliding(*ent)) continue;
 
-                    if (FixedEntity* resource = dynamic_cast<FixedEntity*>(ent.get())) // en cas de ressource, suprimme la ressource
-                    {
-                        player->addScore();
-                        entities.erase(it);
-                        break;
-                    }
-                    else if (PatrolEntity* enemy = dynamic_cast<PatrolEntity*>(ent.get())) // en cas d'ennemis, quitte le jeu
-                    {
-                        QApplication::quit();
-                    }
+                if (dynamic_cast<BounceEntity*>(ent.get()))
+                    player->rebondEntite();
+                else if (dynamic_cast<FixedEntity*>(ent.get()))
+                {
+                    player->addScore();
+                    entities.erase(it);
+                    break;
                 }
+                else if (dynamic_cast<PatrolEntity*>(ent.get()))
+                    QApplication::quit();
             }
 
         }
