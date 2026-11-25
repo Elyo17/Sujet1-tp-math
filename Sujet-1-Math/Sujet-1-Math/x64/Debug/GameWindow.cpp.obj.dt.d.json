@@ -1,10 +1,10 @@
 {
     "Version": "1.2",
     "Data": {
-        "Source": "c:\\users\\alexp\\documents\\cours\\mathématiques\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\gamewindow.cpp",
+        "Source": "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\gamewindow.cpp",
         "ProvidedModule": "",
         "Includes": [
-            "c:\\users\\alexp\\documents\\cours\\mathématiques\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\gamewindow.h",
+            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\gamewindow.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qmainwindow",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qmainwindow.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qtwidgetsglobal.h",
@@ -363,6 +363,7 @@
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qcursor.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qbitmap.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qtabwidget.h",
+            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\entity.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qkeyevent",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qevent.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qcoreevent.h",
@@ -401,8 +402,17 @@
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qpen.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qtimer",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qtimer.h",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qdebug",
+            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\playerentity.h",
             "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qpixmap",
-            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtcore\\qdebug"
+            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\fixedentity.h",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qcolor",
+            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\patrolentity.h",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qcolor",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qapplication",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtwidgets\\qapplication.h",
+            "c:\\users\\p_el\\source\\repos\\sujet1-tp-math\\sujet-1-math\\sujet-1-math\\enemyentity.h",
+            "c:\\qt\\6.11.2\\msvc2022_64\\include\\qtgui\\qcolor"
         ],
         "ImportedModules": [],
         "ImportedHeaderUnits": []
