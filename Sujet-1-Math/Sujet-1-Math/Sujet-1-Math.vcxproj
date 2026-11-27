@@ -60,9 +60,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\p_el\source\repos\Sujet1-tp-math\eigen-5.0.1</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -92,15 +98,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TrainingEntity.cpp" />
+    <ClCompile Include="IATests.cpp" />
     <QtRcc Include="Sujet1Math.qrc" />
     <QtUic Include="Sujet1Math.ui" />
     <QtMoc Include="Sujet1Math.h" />
+    <ClCompile Include="AIEnemyEntity.cpp" />
+    <ClCompile Include="computeHyperplanCoefficients.cpp" />
     <ClCompile Include="EnemyEntity.cpp" />
     <ClCompile Include="FixedEntity.cpp" />
     <ClCompile Include="FollowerEntity.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="PatrolEntity.cpp" />
     <ClCompile Include="PlayerEntity.cpp" />
+    <ClCompile Include="ReplayEntity.cpp" />
     <ClCompile Include="Sujet1Math.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -108,12 +119,18 @@
     <QtMoc Include="GameWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIEnemyEntity.h" />
     <ClInclude Include="EnemyEntity.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FixedEntity.h" />
     <ClInclude Include="FollowerEntity.h" />
+    <ClInclude Include="IAConfig.h" />
+    <ClInclude Include="IATrainData.h" />
     <ClInclude Include="PatrolEntity.h" />
     <ClInclude Include="PlayerEntity.h" />
+    <ClInclude Include="ReplayEntity.h" />
+    <ClInclude Include="TrainingEntity.h" />
+    <ClInclude Include="IATests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
